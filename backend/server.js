@@ -5,7 +5,14 @@ const axios = require("axios");
 const pdfParse = require("pdf-parse");
 
 // Plugins
-fastify.register(cors, { origin: "*" });
+fastify.register(cors, {
+  origin: [
+    "http://localhost:5173",
+    "https://ai-job-tracker-sigma-brown.vercel.app"
+  ],
+  methods: ["GET", "POST"],
+  credentials: true
+});
 fastify.register(require("@fastify/multipart"));
 
 // Storage

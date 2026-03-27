@@ -7,19 +7,21 @@ function App() {
   const [search, setSearch] = useState("frontend developer");
   const [location, setLocation] = useState("bangalore");
   const [loading, setLoading] = useState(false);
-
-  const fetchJobs = async () => {
+const fetchJobs = async () => {
+  try {
     setLoading(true);
-    try {
-      const res = await axios.get(
-        `https://ai-job-tracker-backend.onrender.com?what=${search}&where=${location}`
-      );
-      setJobs(res.data);
-    } catch (error) {
-      console.error("Error fetching jobs:", error);
-    }
+
+    const res = await axios.get(
+      `https://ai-job-tracker-backend-401j.onrender.com/jobs?what=${search}&where=${location}`
+    );
+
+    setJobs(res.data);
+  } catch (err) {
+    console.log("ERROR:", err);
+  } finally {
     setLoading(false);
-  };
+  }
+};
 
   useEffect(() => {
     fetchJobs();
@@ -62,6 +64,7 @@ function App() {
 
       {/* Job Grid */}
       <div className="grid">
+          {loading && <p style={{ color: "white" }}>Loading jobs... ⏳</p>}
         {jobs.map((job) => (
           <div className="glass-card" key={job.id}>
             <div className="card-header">
