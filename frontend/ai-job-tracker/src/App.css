@@ -1,0 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* --- Global Reset & Background --- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background: #020617; /* Deepest Navy */
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- Background Glows (The Glassmorphism Secret) --- */
+.app-container {
+  position: relative;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  z-index: 1;
+}
+
+.blur-circle {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: -1;
+  opacity: 0.25;
+}
+
+.primary {
+  width: 500px;
+  height: 500px;
+  background: #3b82f6;
+  top: -150px;
+  left: -100px;
+}
+
+.secondary {
+  width: 400px;
+  height: 400px;
+  background: #8b5cf6;
+  bottom: 5%;
+  right: -100px;
+}
+
+/* --- Header & Typography --- */
+.header {
+  text-align: center;
+  margin-bottom: 60px; /* Space between title and search */
+}
+
+.title {
+  font-size: 56px;
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -1px;
+  background: linear-gradient(to bottom, #ffffff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #94a3b8;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* --- Search Bar (Industry Standard Layout) --- */
+.search-glass-box {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 12px 24px;
+  max-width: 850px;
+  margin: 0 auto 80px auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+}
+
+.input-group label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #3b82f6;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.input-group input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+}
+
+.divider {
+  width: 1px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.search-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 16px 35px;
+  border-radius: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* --- 3-Column Job Grid --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* FORCED 3 COLUMNS */
+  gap: 30px;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 400px;
+}
+
+.glass-card:hover {
+  transform: translateY(-12px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* --- Card Components --- */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 25px;
+}
+
+.company-info {
+  display: flex;
+  gap: 15px;
+}
+
+.company-logo-placeholder {
+  width: 50px;
+  height: 500px;
+  max-height: 50px;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 22px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.job-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.company-name {
+  margin: 4px 0 0 0;
+  font-size: 15px;
+  color: #94a3b8;
+}
+
+/* Match Visualization (SVG) */
+.match-visual {
+  text-align: center;
+}
+
+.circular-chart {
+  width: 55px;
+  height: 55px;
+}
+
+.circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 3.5;
+}
+
+.circle {
+  fill: none;
+  stroke: #10b981;
+  stroke-width: 3.5;
+  stroke-linecap: round;
+}
+
+.percentage {
+  fill: white;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.match-label {
+  display: block;
+  font-size: 10px;
+  color: #10b981;
+  font-weight: 700;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+
+/* Body Text */
+.location-tag {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-bottom: 25px;
+}
+
+/* Buttons */
+.card-footer {
+  display: flex;
+  gap: 12px;
+}
+
+.apply-glass-btn {
+  flex: 2;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid #10b981;
+  color: #10b981;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.apply-glass-btn:hover {
+  background: #10b981;
+  color: white;
+}
+
+.compare-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 14px;
+  border-radius: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.compare-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.load-more {
+  display: block;
+  margin: 60px auto 0 auto;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+  padding: 12px 45px;
+  border-radius: 50px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.load-more:hover {
+  border-color: white;
+  color: white;
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 1200px) {
+  .grid { grid-template-columns: repeat(2, 1fr); }
+  .title { font-size: 48px; }
+}
+
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; }
+  .search-glass-box { flex-direction: column; gap: 20px; padding: 30px; }
+  .divider { display: none; }
+  .search-btn { width: 100%; }
+}
