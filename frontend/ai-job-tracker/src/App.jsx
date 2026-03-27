@@ -12,7 +12,7 @@ function App() {
     setLoading(true);
     try {
       const res = await axios.get(
-        `http://localhost:3000/jobs?what=${search}&where=${location}`
+        `https://ai-job-tracker-backend.onrender.com?what=${search}&where=${location}`
       );
       setJobs(res.data);
     } catch (error) {
