@@ -110,17 +110,3 @@ fpr this you have to create account on https://www.adzuna.com/ and then access a
 Abhishek Burud
 
 ---
-
-## ✨ Features
-- Track job applications
-- Manage job status
-- Simple UI
-
----
-
-## 🛠 Tech Stack
-- Frontend: HTML, CSS, JS / React
-- Backend: Node.js / Spring Boot
-- Database: MongoDB / MySQL
-
----
