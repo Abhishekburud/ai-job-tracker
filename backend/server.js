@@ -1,27 +1,51 @@
 require("dotenv").config();
-const fastify = require("fastify")({ logger: true });
+
+const fastify = require("fastify")({
+  logger: true,
+});
+
 const cors = require("@fastify/cors");
 const axios = require("axios");
 const pdfParse = require("pdf-parse");
 
-// Plugins
+// ==========================
+// ✅ PLUGINS
+// ==========================
+
+// CORS (Production Safe)
 fastify.register(cors, {
-  origin: [
-    "http://localhost:5173",
-    "https://ai-job-tracker-sigma-brown.vercel.app"
-  ],
+  origin: (origin, cb) => {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "https://ai-job-tracker-mebt3zwt0-abhishekburuds-projects.vercel.app",
+    ];
+
+    // allow no-origin (like Postman / mobile apps)
+    if (!origin) return cb(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error("Not allowed by CORS"), false);
+    }
+  },
   methods: ["GET", "POST"],
-  credentials: true
+  credentials: true,
 });
+
 fastify.register(require("@fastify/multipart"));
 
-// Storage
+// ==========================
+// ✅ GLOBAL STORAGE (TEMP)
+// ==========================
+
 let resumeText = "";
 let applications = [];
 
 // ==========================
-// 🔹 MATCH SCORE (FREE LOGIC)
+// ✅ UTILITY: MATCH SCORE
 // ==========================
+
 const getMatchScore = (resume, jobDesc) => {
   if (!resume) return 50;
 
@@ -42,8 +66,15 @@ const getMatchScore = (resume, jobDesc) => {
 };
 
 // ==========================
-// 🔹 JOBS API (ADZUNA)
+// ✅ ROUTES
 // ==========================
+
+// 🔹 Health Check (IMPORTANT for Render)
+fastify.get("/", async () => {
+  return { status: "API is running 🚀" };
+});
+
+// 🔹 JOBS API
 fastify.get("/jobs", async (req, reply) => {
   try {
     const { what = "developer", where = "india" } = req.query;
@@ -72,45 +103,52 @@ fastify.get("/jobs", async (req, reply) => {
 
     return jobs;
   } catch (err) {
-    console.log(err);
+    fastify.log.error(err);
     return reply.status(500).send({ error: "Failed to fetch jobs" });
   }
 });
 
-// ==========================
 // 🔹 UPLOAD RESUME
-// ==========================
 fastify.post("/upload", async (req, reply) => {
-  const data = await req.file();
-  const buffer = await data.toBuffer();
+  try {
+    const data = await req.file();
+    const buffer = await data.toBuffer();
 
-  const parsed = await pdfParse(buffer);
-  resumeText = parsed.text;
+    const parsed = await pdfParse(buffer);
+    resumeText = parsed.text;
 
-  return { message: "Resume uploaded" };
+    return { message: "Resume uploaded successfully" };
+  } catch (err) {
+    fastify.log.error(err);
+    return reply.status(500).send({ error: "Upload failed" });
+  }
 });
 
-// ==========================
-// 🔹 APPLY
-// ==========================
-fastify.post("/apply", async (req) => {
-  const { jobId, title } = req.body;
+// 🔹 APPLY JOB
+fastify.post("/apply", async (req, reply) => {
+  try {
+    const { jobId, title } = req.body;
 
-  applications.push({
-    jobId,
-    title,
-    status: "Applied",
-  });
+    applications.push({
+      jobId,
+      title,
+      status: "Applied",
+      appliedAt: new Date(),
+    });
 
-  return { message: "Saved" };
+    return { message: "Application saved" };
+  } catch (err) {
+    fastify.log.error(err);
+    return reply.status(500).send({ error: "Failed to save application" });
+  }
 });
 
-// ==========================
-fastify.get("/applications", async () => applications);
+// 🔹 GET APPLICATIONS
+fastify.get("/applications", async () => {
+  return applications;
+});
 
-// ==========================
-// 🔹 AI (FREE LOGIC)
-// ==========================
+// 🔹 AI HELPER
 fastify.post("/ai", async (req) => {
   const { query } = req.body;
 
@@ -128,13 +166,21 @@ fastify.post("/ai", async (req) => {
 });
 
 // ==========================
-fastify.listen(
-  { port: process.env.PORT || 3000, host: "0.0.0.0" },
-  (err) => {
-    if (err) {
-      console.error(err);
-      process.exit(1);
-    }
-    console.log("🚀 Server running");
+// ✅ START SERVER
+// ==========================
+
+const start = async () => {
+  try {
+    await fastify.listen({
+      port: process.env.PORT || 3000,
+      host: "0.0.0.0",
+    });
+
+    console.log("🚀 Server running on production");
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
   }
-);
+};
+
+start();
