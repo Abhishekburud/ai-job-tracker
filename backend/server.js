@@ -13,24 +13,25 @@ const pdfParse = require("pdf-parse");
 // ==========================
 
 // CORS (Production Safe)
-fastify.register(cors, {
+fastify.register(require("@fastify/cors"), {
   origin: (origin, cb) => {
-    const allowedOrigins = [
-      "http://localhost:5173",
-      "https://ai-job-tracker-mebt3zwt0-abhishekburuds-projects.vercel.app",
-    ];
-
-    // allow no-origin (like Postman / mobile apps)
+    // allow requests with no origin (Postman, mobile apps)
     if (!origin) return cb(null, true);
 
-    if (allowedOrigins.includes(origin)) {
-      cb(null, true);
-    } else {
-      cb(new Error("Not allowed by CORS"), false);
+    // allow localhost
+    if (origin.includes("localhost")) {
+      return cb(null, true);
     }
+
+    // allow ALL vercel deployments (IMPORTANT 🔥)
+    if (origin.includes("vercel.app")) {
+      return cb(null, true);
+    }
+
+    // block others
+    cb(new Error("Not allowed by CORS"), false);
   },
   methods: ["GET", "POST"],
-  credentials: true,
 });
 
 fastify.register(require("@fastify/multipart"));
