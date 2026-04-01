@@ -1,4 +1,4 @@
-import JobPage from "./Pages/JobPage";
+import JobPage from "./pages/JobPage";
 
 function App() {
   return <JobPage />;
