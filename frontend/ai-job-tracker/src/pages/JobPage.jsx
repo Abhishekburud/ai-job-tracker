@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import JobCard from "../components/JobCard";
+import Navbar from "../components/Navbar";
+import SearchBar from "../components/SearchBar";
 
 function JobPage() {
   const [jobs, setJobs] = useState([]);
