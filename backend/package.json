@@ -13,9 +13,12 @@
     "@fastify/cors": "^11.2.0",
     "@fastify/multipart": "^9.4.0",
     "axios": "^1.13.6",
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.3.1",
     "fastify": "^5.8.4",
+    "jsonwebtoken": "^9.0.3",
     "langchain": "^1.2.37",
+    "mongoose": "^9.3.3",
     "openai": "^6.33.0",
     "pdf-parse": "^2.4.5"
   }

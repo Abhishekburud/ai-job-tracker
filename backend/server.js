@@ -1,5 +1,12 @@
 require("dotenv").config();
 
+const mongoose = require("mongoose");
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("DB Connected"))
+  .catch(err => console.log(err));
+
+
 const fastify = require("fastify")({
   logger: true,
 });
@@ -11,6 +18,8 @@ const pdfParse = require("pdf-parse");
 // ==========================
 // ✅ PLUGINS
 // ==========================
+
+fastify.register(require("./routes/auth"));
 
 // CORS (Production Safe)
 fastify.register(require("@fastify/cors"), {
@@ -35,6 +44,26 @@ fastify.register(require("@fastify/cors"), {
 });
 
 fastify.register(require("@fastify/multipart"));
+
+
+const { verifyToken, isAdmin } = require("./middleware/auth");
+
+// Add Job
+fastify.post("/admin/jobs", { preHandler: [verifyToken, isAdmin] }, async (req) => {
+  return { message: "Job added (for now static)" };
+});
+
+// View Users
+const User = require("./models/User");
+
+fastify.get("/admin/users", { preHandler: [verifyToken, isAdmin] }, async () => {
+  return await User.find();
+});
+
+// View Applications
+fastify.get("/admin/applications", { preHandler: [verifyToken, isAdmin] }, async () => {
+  return applications;
+});
 
 // ==========================
 // ✅ GLOBAL STORAGE (TEMP)
